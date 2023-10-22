@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='work_dict_action' model='ir.actions.act_window'>
+        <field name="name">Work Dict</field>
+        <field name="res_model">work.dict</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Справочник работ" id="work_dict_menu" parent="report_base_menu" action="work_dict_action"/>
+
+    
+    <record id="work_dict_view_form" model="ir.ui.view">
+        <field name="name">Work Dict Form</field>
+        <field name="model">work.dict</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name= 'category_id' options="{'no_create_edit':True}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="work_dict_view_tree" model="ir.ui.view">
+        <field name="name">Work Dict Form</field>
+        <field name="model">work.dict</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name= 'category_id'/>
+            </tree>
+        </field>
+    </record>
+
+
+</odoo>

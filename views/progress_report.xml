@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='progress_report_action' model='ir.actions.act_window'>
+        <field name="name">Progress Report</field>
+        <field name="res_model">progress.report</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Reports" id="report_base_menu" />
+    <menuitem name="Отчеты" id="progress_report_menu" parent="report_base_menu" action="progress_report_action"/>
+
+    <record id="progress_report_view_form" model="ir.ui.view">
+        <field name="name">Progress Report Form</field>
+        <field name="model">progress.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="client_name"/>
+                            <field name="worker_id" options="{'no_create': True}"/>
+                            <field name="weather"/>
+                            <field name="date_report"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Works" name='Список работ'>
+                            <field name="work_list_ids">
+                                <tree editable="bottom">
+                                    <field name="work_name" options="{'no_create': True}"/>
+                                    <field name="start_time" widget='float_time'/>
+                                    <field name="end_time" widget='float_time'/>
+                                    <field name="total" widget='float_time'/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="work_name"/> 
+                                        <field name="start_time" widget='float_time'/>
+                                        <field name="end_time" widget='float_time'/>
+                                        <field name="total" widget='float_time'/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                    <button name='change_state_on_approval' type='object' string = "Отправить на согласование"  class='oe_highlight' states='new'/>
+                    <button name='change_state_approved' type='object' string = "Согласовать"  class='oe_highlight' states='on_approval'/>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="progress_report_view_tree" model="ir.ui.view">
+        <field name="name">Progress Report Tree</field>
+        <field name="model">progress.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date_report"/>
+                <field name="client_name"/>
+                <field name="weather"/>
+                <field name="worker_id"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+</odoo>
