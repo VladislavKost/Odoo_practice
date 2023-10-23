@@ -9,15 +9,15 @@ class ProgressReport(models.Model):
     _description = "Progress Report"
 
     date_report = fields.Date(
-        "Дата заполнения", required=True, default=fields.Date.today
+        "Дата отчета", required=True, default=fields.Date.today
     )
     weather = fields.Selection(
         [
             ("clear", "ясно"),
             ("cloudy", "пасмурно"),
+            ("foggy", "туман"),
             ("rainy", "дождь"),
             ("snowy", "снег"),
-            ("foggy", "туман"),
         ],
         string="Погодные условия",
         required=True,

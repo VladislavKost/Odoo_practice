@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='work_statistics_action' model='ir.actions.act_window'>
+        <field name="name">Work Statistics</field>
+        <field name="res_model">work.list</field>
+        <field name="view_mode">pivot</field>
+    </record>
+
+    <menuitem name="Статистика работ" id="work__statistics_menu" parent="report_base_menu" action="work_statistics_action"/>
+
+     <record id="work_statistics_view_pivot" model="ir.ui.view">
+        <field name="name">Work Statistics Pivot</field>
+        <field name="model">work.list</field>
+        <field name="arch" type="xml">
+            <pivot string="Статистика работ">
+                <field name="category_name" type="row"/>
+                <field name="report_date" type="col"/>
+                <field name="total" type='measure'/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="work_statistics_view_search" model="ir.ui.view">
+            <field name="name">Work Statistics Search</field>
+            <field name="model">work.list</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="Дата отчета" name="report_date" date="report_date"/>
+                    <group string="Group By">
+                        <filter string="Категория работ" name="category_name" context="{'group_by':'category_name'}"/>
+                        <filter string="Наименование работ" name="work_name" context="{'group_by':'work_name'}"/>
+                        <filter string="Номер отчета" name="report_number" context="{'group_by':'record_id'}"/>
+                        <filter string="Дата отчета" name="report_date" context="{'group_by':'report_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+</odoo>

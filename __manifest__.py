@@ -13,5 +13,6 @@
         'views/work_list.xml',
         'views/work_name.xml',
         'views/work_category.xml',
+        'views/work_statistics.xml'
         ],
 }

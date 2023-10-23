@@ -4,19 +4,23 @@ from odoo.exceptions import ValidationError
 
 class WorksList(models.Model):
     _name = "work.list"
-    _description = "Work List for report"
+    _description = "Work List for Report"
 
-    category_name = fields.Char("Категория работ", compute="_get_work_category", store=True)
+    category_name = fields.Char(
+        "Категория работ", compute="_get_work_category", store=True
+    )
     work_name = fields.Many2one(
         "work.dict", string="Наименование работы", required=True
     )
     start_time = fields.Float("Время начала", required=True)
     end_time = fields.Float("Время окончания", required=True)
-    total = fields.Float("Общее время работ", compute="_compute_total")
+    total = fields.Float("Общее время", compute="_compute_total", store=True)
+    report_date = fields.Date(
+        "Дата отчета", compute="_get_report_data", store=True
+    )
     record_id = fields.Many2one(
         "progress.report", string="Номер отчета", ondelete="cascade"
     )
-
 
     @api.depends("start_time", "end_time")
     def _compute_total(self):
@@ -31,6 +35,10 @@ class WorksList(models.Model):
         for record in self:
             record.category_name = record.work_name.category_id.name
 
+    @api.depends("record_id")
+    def _get_report_data(self):
+        for record in self:
+            record.report_date = record.record_id.date_report
 
     @api.constrains("start_time", "end_time")
     def _check_intervals(self):
@@ -75,15 +83,15 @@ class WorkCategory(models.Model):
         "work.dict", "category_id", string="Наименование работ", required=True
     )
     works_count = fields.Integer("Количество работ в категории", compute="_count_works")
-    
 
     def get_works(self):
         return {
-            "name": ("Работы категории"),
-            "view_mode": "tree,form",
+            "name": (f"Работы категории"),
+            "view_mode": "tree",
             "res_model": "work.dict",
             "type": "ir.actions.act_window",
-            "domain": [("category_id", "=", self.id)],}
+            "domain": [("category_id", "=", self.id)],
+        }
 
     @api.depends("work_dict_ids")
     def _count_works(self):
@@ -93,11 +101,10 @@ class WorkCategory(models.Model):
             )
 
 
-
-
 class WorkDict(models.Model):
     _name = "work.dict"
     _description = "The list of possible works"
+    _order = "name"
 
     name = fields.Char("Наименование работы", required=True)
     category_id = fields.Many2one(

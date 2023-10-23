@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id='work_dict_action' model='ir.actions.act_window'>
         <field name="name">Work Dict</field>
         <field name="res_model">work.dict</field>
@@ -8,7 +9,6 @@
 
     <menuitem name="Справочник работ" id="work_dict_menu" parent="report_base_menu" action="work_dict_action"/>
 
-    
     <record id="work_dict_view_form" model="ir.ui.view">
         <field name="name">Work Dict Form</field>
         <field name="model">work.dict</field>
@@ -34,6 +34,5 @@
             </tree>
         </field>
     </record>
-
 
 </odoo>
