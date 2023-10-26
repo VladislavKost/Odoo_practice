@@ -1,1 +1,1 @@
-from . import modelsg
+from . import models
