@@ -9,10 +9,10 @@
     'depends': ['base', 'mail',],
     'data': [
         'security/ir.model.access.csv',
-        'views/progress_report.xml',
-        'views/work_list.xml',
-        'views/work_name.xml',
-        'views/work_category.xml',
-        'views/work_statistics.xml'
+        'views/progress_report_views.xml',
+        'views/work_list_views.xml',
+        'views/work_name_views.xml',
+        'views/work_category_views.xml',
+        'views/work_statistics_views.xml'
         ],
 }

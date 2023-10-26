@@ -2,12 +2,50 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 
+class WorkCategory(models.Model):
+    _name = "work.category"
+    _description = "The list of work categories"
+
+    name = fields.Char("Название категории", required=True)
+    work_dict_ids = fields.One2many(
+        "work.dict", "category_id", string="Наименование работ", required=True
+    )
+    works_count = fields.Integer("Количество работ в категории", compute="compute_count_works")
+
+    def get_works(self):
+        return {
+            "name": (f"Работы категории"),
+            "view_mode": "tree",
+            "res_model": "work.dict",
+            "type": "ir.actions.act_window",
+            "domain": [("category_id", "=", self.id)],
+        }
+
+    @api.depends("work_dict_ids")
+    def compute_count_works(self):
+        for record in self:
+            record.works_count = self.env["work.dict"].search_count(
+                [("category_id", "=", self.id)]
+            )
+
+
+class WorkDict(models.Model):
+    _name = "work.dict"
+    _description = "The list of possible works"
+    _order = "name"
+
+    name = fields.Char("Наименование работы", required=True)
+    category_id = fields.Many2one(
+        "work.category", string="Название категории", ondelete="cascade", required=True
+    )
+
+
 class WorksList(models.Model):
     _name = "work.list"
     _description = "Work List for Report"
 
-    category_name = fields.Char(
-        "Категория работ", compute="_get_work_category", store=True
+    category_name = fields.Many2one(
+        string="Категория работ", related="work_name.category_id", store=True
     )
     work_name = fields.Many2one(
         "work.dict", string="Наименование работы", required=True
@@ -16,29 +54,11 @@ class WorksList(models.Model):
     end_time = fields.Float("Время окончания", required=True)
     total = fields.Float("Общее время", compute="_compute_total", store=True)
     report_date = fields.Date(
-        "Дата отчета", compute="_get_report_data", store=True
+        string="Дата отчета", related="record_id.date_report", store=True
     )
     record_id = fields.Many2one(
         "progress.report", string="Номер отчета", ondelete="cascade"
     )
-
-    @api.depends("start_time", "end_time")
-    def _compute_total(self):
-        for record in self:
-            if record.end_time > record.start_time:
-                record.total = record.end_time - record.start_time
-            else:
-                record.total = 0
-
-    @api.depends("work_name")
-    def _get_work_category(self):
-        for record in self:
-            record.category_name = record.work_name.category_id.name
-
-    @api.depends("record_id")
-    def _get_report_data(self):
-        for record in self:
-            record.report_date = record.record_id.date_report
 
     @api.constrains("start_time", "end_time")
     def _check_intervals(self):
@@ -73,40 +93,10 @@ class WorksList(models.Model):
             else:
                 raise ValidationError("Временной интервал может быть от 0 до 24 часов")
 
-
-class WorkCategory(models.Model):
-    _name = "work.category"
-    _description = "The list of work categories"
-
-    name = fields.Char("Название категории", required=True)
-    work_dict_ids = fields.One2many(
-        "work.dict", "category_id", string="Наименование работ", required=True
-    )
-    works_count = fields.Integer("Количество работ в категории", compute="_count_works")
-
-    def get_works(self):
-        return {
-            "name": (f"Работы категории"),
-            "view_mode": "tree",
-            "res_model": "work.dict",
-            "type": "ir.actions.act_window",
-            "domain": [("category_id", "=", self.id)],
-        }
-
-    @api.depends("work_dict_ids")
-    def _count_works(self):
+    @api.depends("start_time", "end_time")
+    def _compute_total(self):
         for record in self:
-            record.works_count = self.env["work.dict"].search_count(
-                [("category_id", "=", self.id)]
-            )
-
-
-class WorkDict(models.Model):
-    _name = "work.dict"
-    _description = "The list of possible works"
-    _order = "name"
-
-    name = fields.Char("Наименование работы", required=True)
-    category_id = fields.Many2one(
-        "work.category", string="Название категории", ondelete="cascade", required=True
-    )
+            if record.end_time > record.start_time:
+                record.total = record.end_time - record.start_time
+            else:
+                record.total = 0

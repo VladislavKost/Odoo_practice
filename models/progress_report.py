@@ -8,9 +8,7 @@ class ProgressReport(models.Model):
     _inherit = ["mail.thread"]
     _description = "Progress Report"
 
-    date_report = fields.Date(
-        "Дата отчета", required=True, default=fields.Date.today
-    )
+    date_report = fields.Date("Дата отчета", required=True, default=fields.Date.today)
     weather = fields.Selection(
         [
             ("clear", "ясно"),
@@ -40,6 +38,12 @@ class ProgressReport(models.Model):
         tracking=True,
     )
 
+    def change_state_approved(self):
+        self.state = "approved"
+
+    def change_state_on_approval(self):
+        self.state = "on_approval"
+
     def name_get(self):
         res = []
         for rec in self:
@@ -48,14 +52,8 @@ class ProgressReport(models.Model):
             )
         return res
 
-    def change_state_on_approval(self):
-        self.state = "on_approval"
-
-    def change_state_approved(self):
-        self.state = "approved"
-
     @api.constrains("work_list_ids")
-    def check_work_list(self):
+    def _check_work_list(self):
         for record in self:
             if not record.work_list_ids:
                 raise ValidationError("Список работ должен быть заполнен!")

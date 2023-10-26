@@ -1,8 +1,8 @@
-<?xml version="1.1" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
     <record id='progress_report_action' model='ir.actions.act_window'>
-        <field name="name">Progress Report</field>
+        <field name="name">Отчет</field>
         <field name="res_model">progress.report</field>
         <field name="view_mode">tree,form</field>
     </record>
@@ -16,11 +16,13 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name='change_state_on_approval' type='object' string = "Отправить на согласование"  class='oe_highlight' states='new'/>
+                    <button name='change_state_approved' type='object' string = "Согласовать"  class='oe_highlight' states='on_approval'/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <group>
-                        <group>
+                        <group string="Отчет">
                             <field name="client_name"/>
                             <field name="worker_id" options="{'no_create': True}"/>
                             <field name="weather"/>
@@ -28,7 +30,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Works" name='Список работ'>
+                        <page string="Работы" name='Список работ'>
                             <field name="work_list_ids">
                                 <tree editable="bottom">
                                     <field name="work_name" options="{'no_create': True}"/>
@@ -47,8 +49,6 @@
                             </field>
                         </page>
                     </notebook>
-                    <button name='change_state_on_approval' type='object' string = "Отправить на согласование"  class='oe_highlight' states='new'/>
-                    <button name='change_state_approved' type='object' string = "Согласовать"  class='oe_highlight' states='on_approval'/>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" groups="base.group_user"/>
