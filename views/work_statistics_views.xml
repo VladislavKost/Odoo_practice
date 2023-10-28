@@ -3,7 +3,7 @@
     <record id='work_statistics_action' model='ir.actions.act_window'>
         <field name="name">Work Statistics</field>
         <field name="res_model">work.list</field>
-        <field name="view_mode">pivot</field>
+        <field name="view_mode">pivot,graph</field>
     </record>
 
     <menuitem name="Статистика работ" id="work__statistics_menu" parent="report_base_menu" action="work_statistics_action"/>
@@ -32,8 +32,23 @@
                         <filter string="Номер отчета" name="report_number" context="{'group_by':'record_id'}"/>
                         <filter string="Дата отчета" name="report_date" context="{'group_by':'report_date'}"/>
                     </group>
+                    <searchpanel>
+                        <field name="category_name" icon="fa fa-users"/>
+                        <field name="work_name" icon="fa fa-list" select="multi"/>
+                    </searchpanel>
                 </search>
             </field>
         </record>
 
+    <record id="work_statistics_view_graph" model="ir.ui.view">
+        <field name="model">work.list</field>
+        <field name="arch" type="xml">
+            <graph type="pie">
+                <field name="work_name" type='row'/>
+                <field name="total" type='measure'/>
+            </graph>
+        </field>
+    </record>
+
+    
 </odoo>

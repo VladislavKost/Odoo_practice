@@ -17,7 +17,7 @@
                 <sheet>
                     <div name="button_box" position="inside">
                         <button class="oe_stat_button" type="object" name="get_works"
-                icon="fa-wrench">
+                                icon="fa-wrench">
                             <field string="Работы" name="works_count" widget="statinfo"/>
                         </button>
                     </div>
