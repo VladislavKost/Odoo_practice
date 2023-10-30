@@ -1,6 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_progress_report,access_progress_report,model_progress_report,,1,1,1,1
 access_work_list,access_work_list,model_work_list,,1,1,1,1
-access_work_list,access_work_list,model_work_list,,1,1,1,1
-acess_work_dict, acess_work_dict,model_work_dict,,1,1,1,1
-acess_work_category, acess_work_category,model_work_category,,1,1,1,1
+access_work_dict, acess_work_dict,model_work_dict,,1,1,1,1
+access_work_category, acess_work_category,model_work_category,,1,1,1,1
+access_construction_object, access_construction_object,model_construction_object,,1,1,1,1
+access_product_arrival,access_product_arrival,model_product_arrival,,1,1,1,1
+access_product_consumption,access_product_consumption,model_product_consumption,,1,1,1,1

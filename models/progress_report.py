@@ -27,6 +27,7 @@ class ProgressReport(models.Model):
     work_list_ids = fields.One2many(
         "work.list", "record_id", string="Список работ", required=True
     )
+    construction_object = fields.Many2one('construction.object', 'Объект строительства', required=True)
     state = fields.Selection(
         [
             ("new", "Новый"),
@@ -36,6 +37,12 @@ class ProgressReport(models.Model):
         default="new",
         string="Статус отчета",
         tracking=True,
+    )
+    product_arrival_ids = fields.One2many(
+        "product.arrival", "record_id", string="Приход продукта"
+    )
+    product_consumption_ids = fields.One2many(
+        "product.consumption", "record_id", string="Расход продукта"
     )
 
     def change_state_approved(self):
@@ -57,3 +64,7 @@ class ProgressReport(models.Model):
         for record in self:
             if not record.work_list_ids:
                 raise ValidationError("Список работ должен быть заполнен!")
+            
+
+
+

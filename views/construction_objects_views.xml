@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='construction_object_action' model='ir.actions.act_window'>
+        <field name="name">Construction Object</field>
+        <field name="res_model">construction.object</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Объекты строительства" id="construction_objec_menu" parent="report_base_menu" action="construction_object_action"/>
+
+    <record id="construction_object_view_form" model="ir.ui.view">
+        <field name="name">Construction Object Form</field>
+        <field name="model">construction.object</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="construction_object_view_tree" model="ir.ui.view">
+        <field name="name">Construction Object Tree</field>
+        <field name="model">construction.object</field>
+        <field name="arch" type="xml">
+             <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+</odoo>
