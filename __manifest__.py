@@ -9,6 +9,7 @@
     'depends': ['base', 'mail', 'product', 'stock', 'fleet'],
     'data': [
         'security/ir.model.access.csv',
+        
         'views/progress_report_views.xml',
         'views/work_list_views.xml',
         'views/work_name_views.xml',
@@ -16,6 +17,7 @@
         'views/work_statistics_views.xml',
         'views/construction_objects_views.xml',
         'views/stock_picking_views.xml',
-        'views/stock_location_data.xml',
+
+        'data/stock_location_data.xml',
         ],
 }

@@ -10,7 +10,9 @@ class WorkCategory(models.Model):
     work_dict_ids = fields.One2many(
         "work.dict", "category_id", string="Наименование работ", required=True
     )
-    works_count = fields.Integer("Количество работ в категории", compute="compute_count_works")
+    works_count = fields.Integer(
+        "Количество работ в категории", compute="compute_count_works"
+    )
 
     def get_works(self):
         return {
@@ -59,6 +61,7 @@ class WorksList(models.Model):
     record_id = fields.Many2one(
         "progress.report", string="Номер отчета", ondelete="cascade"
     )
+    record_state = fields.Selection(string="Статус отчета", related="record_id.state")
 
     @api.constrains("start_time", "end_time")
     def _check_intervals(self):
