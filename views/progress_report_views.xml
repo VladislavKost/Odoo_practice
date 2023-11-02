@@ -125,17 +125,21 @@
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card oe_kanban_global_click">
                             <div class='oe_kanban_details'>
-                                <ul>
+                                <div class="text-muted">
                                     <l1>
-                                        Клиент: <field name="client_name"/>
+                                    Клиент: <field name="client_name"/>
                                     </l1>
-                                    <l1>
+                                </div>
+                                <div class="text-muted">
+                                     <l1>
                                         Объект: <field name='construction_object'/>
                                     </l1>
+                                </div>
+                                <div class="text-muted">
                                     <l1>
                                         Дата отчета: <field name="date_report"/>
                                     </l1>
-                                </ul>
+                                </div> 
                             </div>
                         </div>
                     </t>

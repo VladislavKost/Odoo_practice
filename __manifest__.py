@@ -19,5 +19,8 @@
         'views/stock_picking_views.xml',
 
         'data/stock_location_data.xml',
+
+        'reports/progress_reports_template.xml',
+        'reports/progress_reports_report.xml',
         ],
 }

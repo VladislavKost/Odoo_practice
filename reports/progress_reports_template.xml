@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="progress_reports_template">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h1>Отчет по клиенту <t t-esc="doc.client_name"/></h1>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Наименование работ</th>
+                                <th>Время начала работ</th>
+                                <th>Время окончания работ</th>
+                                <th>Общее время работ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="doc.work_list_ids" t-as="work" >
+                                <td><t t-esc="work.work_name.name" /></td>
+                                <td><t t-esc="work.start_time" /></td>
+                                <td><t t-esc="work.end_time" /></td>
+                                <td><t t-esc="work.total" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h1>Статус отчета:  
+                        <span t-field="doc.state" />
+                    </h1>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>
