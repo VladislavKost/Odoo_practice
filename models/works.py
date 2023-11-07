@@ -3,6 +3,7 @@ from odoo.exceptions import ValidationError
 
 
 class WorkCategory(models.Model):
+    # Объект описывает категории работ, отраженных в отчете
     _name = "work.category"
     _description = "The list of work categories"
 
@@ -15,6 +16,7 @@ class WorkCategory(models.Model):
     )
 
     def get_works(self):
+        # Получаем работы, входящих в данную категорию на отдельной странице
         return {
             "name": (f"Работы категории"),
             "view_mode": "tree",
@@ -25,6 +27,7 @@ class WorkCategory(models.Model):
 
     @api.depends("work_dict_ids")
     def compute_count_works(self):
+        # Считаем количество работ, входящих в данную категорию
         for record in self:
             record.works_count = self.env["work.dict"].search_count(
                 [("category_id", "=", self.id)]
@@ -32,6 +35,7 @@ class WorkCategory(models.Model):
 
 
 class WorkDict(models.Model):
+    # Объект описывает работы, отраженных в отчете
     _name = "work.dict"
     _description = "The list of possible works"
     _order = "name"
@@ -43,6 +47,7 @@ class WorkDict(models.Model):
 
 
 class WorksList(models.Model):
+    # Объект описывает работы, время их начала и окончания, общее время работ
     _name = "work.list"
     _description = "Work List for Report"
 
@@ -65,6 +70,7 @@ class WorksList(models.Model):
 
     @api.constrains("start_time", "end_time")
     def _check_intervals(self):
+        # Метод проверяет все ли интервалы заполнены, нет ли пересечения временных интервалов, не отрицательны ли значения
         domain = [("record_id", "=", self.record_id.id)]
         work_list = self.search(domain, order="start_time")
         times_list = [(work.start_time, work.end_time) for work in work_list]
@@ -98,6 +104,7 @@ class WorksList(models.Model):
 
     @api.depends("start_time", "end_time")
     def _compute_total(self):
+        # Метод считает общее время работы для каждой работы
         for record in self:
             if record.end_time > record.start_time:
                 record.total = record.end_time - record.start_time

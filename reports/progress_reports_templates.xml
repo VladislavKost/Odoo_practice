@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<template id="progress_reports_template">
+<template id="progress_reports_templates">
     <t t-call="web.html_container">
         <t t-foreach="docs" t-as="doc">
             <t t-call="web.internal_layout">
@@ -24,9 +24,9 @@
                             </tr>
                         </tbody>
                     </table>
-                    <h1>Статус отчета:  
+                    <h2>Статус отчета:  
                         <span t-field="doc.state" />
-                    </h1>
+                    </h2>
                 </div>
             </t>
         </t>

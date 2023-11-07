@@ -2,6 +2,7 @@ from odoo import models, fields, api
 
 
 class ProductArrival(models.Model):
+    # Создаем объект для описания продуктов, которые прибыли на склад бригады
     _name = "product.arrival"
     _description = "The arrival of products"
 
@@ -15,6 +16,7 @@ class ProductArrival(models.Model):
 
 
 class ProductConsumption(models.Model):
+    # Создаем объект для описания продуктов, которые были использованы и списаны со склада бригады
     _name = "product.consumption"
     _description = "The consumption of products"
 

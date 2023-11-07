@@ -5,6 +5,7 @@ class VirtualConstructionLocation(models.Model):
     _inherit = "res.company"
 
     def _create_construction_location(self):
+        # Создаем объект для создания виртуальной локации construction, в которую будут перемещаться списанные продукты
         parent_location = self.env.ref(
             "stock.stock_location_locations_virtual", raise_if_not_found=False
         )
@@ -26,24 +27,32 @@ class VirtualConstructionLocation(models.Model):
 
     @api.model
     def create_missing_construction_location(self):
+        # Добавляет локацию при установке модуля для уже существующих компаний
         company_ids = self.env["res.company"].search([])
-        construction_product_template_field = self.env["ir.model.fields"]._get("product.template", "property_stock_construction")
+        construction_product_template_field = self.env["ir.model.fields"]._get(
+            "product.template", "property_stock_construction"
+        )
         companies_having_property = (
-            self.env["ir.property"].sudo().search([("fields_id", "=", construction_product_template_field.id),
-                                                   ("res_id", "=", False),]).mapped("company_id"))
+            self.env["ir.property"]
+            .sudo()
+            .search(
+                [
+                    ("fields_id", "=", construction_product_template_field.id),
+                    ("res_id", "=", False),
+                ]
+            )
+            .mapped("company_id")
+        )
         company_without_property = company_ids - companies_having_property
         company_without_property._create_construction_location()
 
     def _create_per_company_locations(self):
-        self.ensure_one()
-        self._create_transit_location()
-        self._create_inventory_loss_location()
-        self._create_production_location()
-        self._create_scrap_location()
+        super(VirtualConstructionLocation, self)._create_per_company_locations()
         self._create_construction_location()
 
 
 class Location(models.Model):
+    # Добавляем виртуальную локацию в поле usage модели stock.location
     _inherit = "stock.location"
 
     usage = fields.Selection(

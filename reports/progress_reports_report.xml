@@ -5,8 +5,8 @@
         <field name="name">Progress Report Record</field>
         <field name="model">progress.report</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">construction.progress_reports_template</field>
-        <field name="report_file">construction.progress_reports_template</field>
+        <field name="report_name">construction.progress_reports_templates</field>
+        <field name="report_file">construction.progress_reports_templates</field>
         <field name="binding_model_id" ref="model_progress_report"/>
         <field name="binding_type">report</field>
     </record>
