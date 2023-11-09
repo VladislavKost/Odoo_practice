@@ -86,7 +86,11 @@ class ProgressReport(models.Model):
     def _make_arrival_picking(self):
         # Метод создает словарь с данными о продукте, который приехал на склад бригады,
         # для создания перемещения между складами
-        crew_location_id = int(self.env['ir.config_parameter'].sudo().get_param('construction.crew_location'))
+        crew_location_id = int(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("construction.crew_location")
+        )
         # Заполняем словарь данными о складе и продукте
         data_for_picking = {}
         arrivals = self.product_arrival_ids
@@ -136,8 +140,14 @@ class ProgressReport(models.Model):
     def _make_consumptions_picking(self):
         # Метод создает словарь с данными о продукте, который был использован бригадой,
         # перемещает продукты в виртуальный склад construction
-        crew_location_id = int(self.env['ir.config_parameter'].sudo().get_param('construction.crew_location'))
-        crew_location = self.env['stock.location'].search([('id', '=', crew_location_id)])
+        crew_location_id = int(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("construction.crew_location")
+        )
+        crew_location = self.env["stock.location"].search(
+            [("id", "=", crew_location_id)]
+        )
         location_id = self.env.ref("construction.stock_construction_location")
         stock_picking_type_id = (
             self.env["stock.picking.type"]

@@ -6,10 +6,13 @@ class ProductArrival(models.Model):
     _name = "product.arrival"
     _description = "The arrival of products"
 
-    product_id = fields.Many2one("product.template", string="Название продукта")
+    product_id = fields.Many2one(
+        "product.template", string="Название продукта", required=True
+    )
     amount = fields.Float("Приход", required=True)
-    location_id = fields.Many2one("stock.location", string="Склад отправитель")
-    # crew_location = fields.Many2one("stock.location", string="Склад бригады")
+    location_id = fields.Many2one(
+        "stock.location", string="Склад отправитель", required=True
+    )
     record_id = fields.Many2one(
         "progress.report", string="Номер отчета", ondelete="cascade"
     )
