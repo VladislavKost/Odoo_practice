@@ -9,6 +9,7 @@ class ProductArrival(models.Model):
     product_id = fields.Many2one("product.template", string="Название продукта")
     amount = fields.Float("Приход", required=True)
     location_id = fields.Many2one("stock.location", string="Склад отправитель")
+    # crew_location = fields.Many2one("stock.location", string="Склад бригады")
     record_id = fields.Many2one(
         "progress.report", string="Номер отчета", ondelete="cascade"
     )

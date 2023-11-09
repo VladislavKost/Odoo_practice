@@ -64,8 +64,8 @@ class ProgressReport(models.Model):
         self._make_arrival_picking()
         self._make_consumptions_picking()
         self.change_state_approved()
-        self.remove_duplicates(self.product_arrival_ids)
-        self.remove_duplicates(self.product_consumption_ids, consumption=True)
+        self._remove_duplicates(self.product_arrival_ids)
+        self._remove_duplicates(self.product_consumption_ids, consumption=True)
 
     def name_get(self):
         # Метод определяет то, как будет отображаться имя отчета
@@ -86,7 +86,7 @@ class ProgressReport(models.Model):
     def _make_arrival_picking(self):
         # Метод создает словарь с данными о продукте, который приехал на склад бригады,
         # для создания перемещения между складами
-        crew_location = self.env["stock.location"].search([("name", "like", "brig")])
+        crew_location_id = int(self.env['ir.config_parameter'].sudo().get_param('construction.crew_location'))
         # Заполняем словарь данными о складе и продукте
         data_for_picking = {}
         arrivals = self.product_arrival_ids
@@ -112,7 +112,7 @@ class ProgressReport(models.Model):
                     "product_id": product_id.id,
                     "product_uom_qty": product_qty,
                     "location_id": location_id.id,
-                    "location_dest_id": crew_location.id,
+                    "location_dest_id": crew_location_id,
                 },
             )
             if not data_for_picking.get(location_id, None):
@@ -121,7 +121,7 @@ class ProgressReport(models.Model):
                         location_id: {
                             "record_id": self.id,
                             "location_id": location_id.id,
-                            "location_dest_id": crew_location.id,
+                            "location_dest_id": crew_location_id,
                             "picking_type_id": stock_picking_type_id,
                             "move_ids": [move_data],
                         }
@@ -136,7 +136,8 @@ class ProgressReport(models.Model):
     def _make_consumptions_picking(self):
         # Метод создает словарь с данными о продукте, который был использован бригадой,
         # перемещает продукты в виртуальный склад construction
-        crew_location = self.env["stock.location"].search([("name", "like", "brig")])
+        crew_location_id = int(self.env['ir.config_parameter'].sudo().get_param('construction.crew_location'))
+        crew_location = self.env['stock.location'].search([('id', '=', crew_location_id)])
         location_id = self.env.ref("construction.stock_construction_location")
         stock_picking_type_id = (
             self.env["stock.picking.type"]
@@ -161,7 +162,7 @@ class ProgressReport(models.Model):
                     "name": "constr",
                     "product_id": product_id.id,
                     "product_uom_qty": product_qty,
-                    "location_id": crew_location.id,
+                    "location_id": crew_location_id,
                     "location_dest_id": location_id.id,
                 },
             )
@@ -170,7 +171,7 @@ class ProgressReport(models.Model):
                     {
                         location_id: {
                             "record_id": self.id,
-                            "location_id": crew_location.id,
+                            "location_id": crew_location_id,
                             "location_dest_id": location_id.id,
                             "picking_type_id": stock_picking_type_id,
                             "move_ids": [move_data],
@@ -199,7 +200,7 @@ class ProgressReport(models.Model):
                     product_qty_move_ids,
                 )
 
-    def remove_duplicates(self, records, consumption=False):
+    def _remove_duplicates(self, records, consumption=False):
         # Удаляет дубликаты в БД для данного отчета, суммируя количество для одинаковых записей
         grouped_records = {}
         for record in records:

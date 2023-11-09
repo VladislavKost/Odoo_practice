@@ -6,3 +6,10 @@ access_work_category, acess_work_category,model_work_category,,1,1,1,1
 access_construction_object, access_construction_object,model_construction_object,,1,1,1,1
 access_product_arrival,access_product_arrival,model_product_arrival,,1,1,1,1
 access_product_consumption,access_product_consumption,model_product_consumption,,1,1,1,1
+access_progress_report,access_progress_report,model_progress_report,group_manager,1,1,1,1
+access_work_list,access_work_list,model_work_list,group_manager,1,1,1,1
+access_work_dict, acess_work_dict,model_work_dict,group_manager,1,1,1,1
+access_work_category, acess_work_category,model_work_category,group_manager,1,1,1,1
+access_construction_object, access_construction_object,model_construction_object,group_manager,1,1,1,1
+access_product_arrival,access_product_arrival,model_product_arrival,group_manager,1,1,1,1
+access_product_consumption,access_product_consumption,model_product_consumption,group_manager,1,1,1,1

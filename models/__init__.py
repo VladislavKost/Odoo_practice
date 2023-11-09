@@ -4,3 +4,4 @@ from . import objects
 from . import transfers
 from . import stock_picking
 from . import virtual_location
+from . import settings
